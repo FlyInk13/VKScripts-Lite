@@ -15,6 +15,4 @@ blankTheme['LOG_WARN_BORDER'] = '#fff5c4';
 blankTheme['TREENODE_FONT_SIZE'] = '13px';
 blankTheme['BASE_FONT_SIZE'] = '13px';
 
-console.log(blankTheme);
-
 export default blankTheme;

@@ -85,6 +85,11 @@ class App extends React.Component {
 
     connect.subscribe((event) => {
       switch(event.detail.type) {
+        case undefined:
+        case 'VKWebAppInitResult':
+        case 'VKWebAppGetUserInfoResult':
+        case 'VKWebAppCallAPIMethodResult':
+          break;
         case 'VKWebAppUpdateConfig':
           let dark = false;
           if (/dark|gray/.test(event.detail.data.scheme)) {
@@ -296,7 +301,7 @@ class App extends React.Component {
       item: iframe
     };
 
-    iframe.src = './iframe.html#' + tabName;
+    iframe.src = './iframe.html?1#' + tabName;
     iframe.style.display = 'none';
     this.refs.tabsContent.appendChild(iframe);
     tabs.push(newTab);
@@ -420,8 +425,8 @@ class App extends React.Component {
     editor.style.width = editorWrap.clientWidth + 'px';
     editor.style.height = editorWrap.clientHeight - padding + 'px';
     this.setState({
-      editorWidth: editorWrap.clientWidth,
-      editorHeight: editorWrap.clientHeight - padding,
+      editorWidth: String(editorWrap.clientWidth + ''),
+      editorHeight: String(editorWrap.clientHeight - padding),
     });
 
     tabsContent.style.height = tabsWrapper.clientHeight - tabsWrapper.firstChild.clientHeight + 'px';
