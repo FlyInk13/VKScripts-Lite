@@ -75,9 +75,6 @@ class App extends React.Component {
         {
           method: "info",
           data: [examples.consoleText]
-        },{
-          method: "info",
-          data: [examples.changeLog]
         }
       ],
       tabs: []
