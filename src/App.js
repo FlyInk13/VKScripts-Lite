@@ -272,7 +272,7 @@ class App extends React.Component {
         alert: (message) => new Promise((resolve) => this.alert(resolve, message ? message.toString() : message)),
         prompt: (message, inputValue) => new Promise((resolve) => this.prompt(resolve, message.toString(), inputValue)),
         Args: getArgs(),
-        connectRequest: (event, data) => connectPromise(event, data),
+        connectRequest: (event, data) => connectPromise.send(event, data),
         close: (res) => {
           setTimeout(() => this.tabClose(tab), 10);
           return res;
