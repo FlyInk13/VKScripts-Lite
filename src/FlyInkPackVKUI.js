@@ -47,15 +47,14 @@ class PanelHeaderFull extends React.Component {
     super(props);
 
     this.state = {
-      fullScreenEnabled: false,
-      listener: null
+      fullScreenEnabled: false
     };
   }
 
-  fullScreenUpdate() {
+  onFullScreenUpdate = () => {
     const fullScreenEnabled = !!document.fullscreenElement;
     this.setState({ fullScreenEnabled });
-  }
+  };
 
   fullScreenToggle() {
     const self = PanelHeaderFull;
@@ -64,7 +63,7 @@ class PanelHeaderFull extends React.Component {
     } else {
       self.closeFullscreen();
     }
-    this.fullScreenUpdate();
+    this.onFullScreenUpdate();
   }
 
   static openFullscreen() {
@@ -93,14 +92,11 @@ class PanelHeaderFull extends React.Component {
   }
 
   componentDidMount() {
-    const listener = () => this.fullScreenUpdate();
-    this.setState({ listener });
-    window.addEventListener('fullscreenchange', listener);
+    window.addEventListener('fullscreenchange', this.onFullScreenUpdate);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('fullscreenchange', this.state.listener);
-    delete this.state.listener;
+    window.removeEventListener('fullscreenchange', this.onFullScreenUpdate);
   }
 
   render() {
