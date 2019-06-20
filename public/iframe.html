@@ -11,7 +11,9 @@
       return vk.promise_api.bind(vk, method);
     };
 
-    vk.connect = connectRequest;
+    vk.connect = function(name, data) {
+      return window.connectRequest(name, data);
+    };
 
     vk.promise_api = function(method, data, options) {
       data = data || {};
