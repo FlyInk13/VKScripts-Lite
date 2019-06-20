@@ -1,0 +1,37 @@
+<script src="https://vkscripts.ru/js/vk.js"></script>
+<script>
+    vk.auth = function(scope, group_id) {
+      return window.auth(scope, group_id).then(function(token) {
+        vk.access_token = token;
+        return token;
+      })
+    };
+
+    vk.getMethod = function(method) {
+      return vk.promise_api.bind(vk, method);
+    };
+
+    vk.connect = connectRequest;
+
+    vk.promise_api = function(method, data, options) {
+      data = data || {};
+      var returnError = data.error;
+      return new Promise(function(resolve, reject) {
+        data.error = 1;
+        vk._api(method, data, function(res) {
+          if (!res.error || returnError) {
+            if (method === 'execute' || returnError) {
+              resolve(res);
+            } else {
+              resolve(res.response);
+            }
+          } else {
+            reject(res);
+          }
+        }, options);
+      });
+    }
+</script>
+<body>
+    Вы можете использовать DOM для отображения интерфейсов :)
+</body>

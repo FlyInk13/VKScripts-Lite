@@ -1,0 +1,156 @@
+/** vk ui web theme **/
+
+.PanelHeader-bg--alternate,
+.PanelHeader-left-in--alternate,
+.PanelHeader-right--alternate {
+  background: #fafbfc;
+  color: #000000;
+}
+
+/** vk ui fix **/
+.HeaderButton {
+  display: inline-block;
+}
+
+.View--android .HorizontalScroll__in {
+  scrollbar-width: none;
+}
+
+.View--android  .HorizontalScroll__in::-webkit-scrollbar {
+  display: none;
+}
+
+.View--android  .HorizontalScroll__in {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.PanelHeader--android .PanelHeader-left-in {
+  display: flex;
+}
+
+/** tabsContent **/
+
+.tabsContent {
+  -webkit-font-smoothing: subpixel-antialiased;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.tabControl {
+  margin: -2px -2px -2px 6px;
+  display: inline-block;
+}
+
+.tabStart {
+  margin-right: 6px;
+}
+
+.tabControl.tabClose {
+  visibility: hidden;
+}
+
+.TabsItem--selected .tabControl.tabClose {
+  visibility: visible;
+}
+
+.tabsContent > * {
+  border: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 300px;
+  min-height: 100%;
+  overflow: auto;
+}
+
+/** split view **/
+
+.splitContentWrap {
+  position: absolute;
+  display: block;
+  width: 100%;
+  padding-top: inherit;
+  background: var(--background_content);
+  bottom: 0;
+  top: 0;
+}
+
+.splitContentWrap > * {
+  position: relative;
+  display: block;
+  height: 50%;
+  width: 100%;
+}
+
+.splitContentWrap.needFullScreenTab .consoleTabsContainer > *:first-child,
+.splitContentWrap.needFullScreenTab > *:first-child {
+  display: none;
+}
+
+.splitContentWrap.needFullScreenTab > * {
+  height: 100%;
+  width: 100%;
+}
+
+@media (min-width: 1281px) {
+  .splitContentWrap > * {
+    height: 100%;
+    width: 50%;
+    float: left;
+  }
+}
+
+/** iframe scroll fix **/
+.iframeWrap {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+.iframeWrap iframe {
+  height: 100%;
+  width: 100%;
+}
+
+/** other styles **/
+.consoleTabsContainer {
+  background: var(--background_content);
+  box-shadow: 0 0 5px rgba(0,0,0,.2);
+  overflow: hidden;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+}
+
+.editorWrap {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.editorWrap > * {
+  border: 0;
+}
+
+body #ace_editor {
+  overflow: visible;
+}
+
+.alertContentWarp {
+  max-height: 300px;
+  max-width: 300px;
+  white-space: pre;
+  text-align: left;
+  overflow: auto;
+}
+
+textarea {
+  font-size: 13px;
+  outline: 0;
+  padding: 0 12px 12px;
+  box-sizing: border-box;
+  background: var(--background_content);
+  color: var(--text_primary);
+}
+
+.toggleEditorButton.textarea {
+  opacity: 0.5;
+}
+
