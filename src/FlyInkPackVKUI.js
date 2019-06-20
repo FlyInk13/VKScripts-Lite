@@ -251,9 +251,32 @@ class PromiseAPI {
 }
 
 
+function getArgs() {
+  const Args = window.location.search
+    .substr(1)
+    .split("&")
+    .reduce(function parseArg(prev, data) {
+      const [keyRaw, valueRaw] = data.split("=");
+      const key = keyRaw.replace(/^vk_/, '');
+      const value = decodeURIComponent(valueRaw || "");
+
+      if (/^vk_/.test(keyRaw)) {
+        prev[key] = value;
+      }
+
+      return prev;
+    }, {});
+
+  Args.uid = Args.user_id;
+
+  return Args;
+}
+
+
 export {
   PanelHeaderFull,
   SetWebTheme,
   PromiseAPI,
-  ScrollableAlert
+  ScrollableAlert,
+  getArgs,
 };

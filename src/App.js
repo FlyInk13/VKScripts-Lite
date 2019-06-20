@@ -22,7 +22,7 @@ import Icon24Settings from '@vkontakte/icons/dist/24/settings';
 import Icon24Unpin from '@vkontakte/icons/dist/24/unpin';
 
 // Elements
-import {PanelHeaderFull, PromiseAPI, SetWebTheme, ScrollableAlert} from './FlyInkPackVKUI';
+import {PanelHeaderFull, PromiseAPI, SetWebTheme, ScrollableAlert, getArgs} from './FlyInkPackVKUI';
 
 // Ace
 import AceEditor from 'react-ace';
@@ -266,6 +266,7 @@ class App extends React.Component {
         auth: (scope, group_id) => this.auth(scope, group_id),
         alert: (message) => new Promise((resolve) => this.alert(resolve, message ? message.toString() : message)),
         prompt: (message, inputValue) => new Promise((resolve) => this.prompt(resolve, message.toString(), inputValue)),
+        Args: getArgs(),
         connectRequest: (event, data) => connectPromise(event, data),
         close: (res) => {
           setTimeout(() => this.tabClose(tab), 10);
