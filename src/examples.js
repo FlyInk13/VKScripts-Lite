@@ -90,9 +90,15 @@ const changeLog = `Что нового в 1.0.0 (beta):
 `;
 
 const sendKeyboard = `
-vk.auth('messages', 181108510); 
+const group_id = 181108510;
 
-return API.messages.send({
+// Разрешаем сообщения группы
+vk.connect("VKWebAppAllowMessagesFromGroup", { group_id });
+// Получаем токен группы
+vk.auth('messages', group_id); 
+
+// Вызываем метод
+const response = API.messages.send({
     peer_id: 61351294,
     message: 'test',
     keyboard: JSON.stringify({
@@ -108,7 +114,7 @@ return API.messages.send({
                 "action": {
                     "type": "open_app",
                     "app_id": 6979558,
-                    "owner_id": -181108510,
+                    "owner_id": -group_id,
                     "hash": "sendKeyboard",
                     "label": "Отправить клавиатуру"
                 }
@@ -116,7 +122,7 @@ return API.messages.send({
             [{
                 "action": {
                     "type": "vkpay",
-                    "hash": "action=transfer-to-group&group_id=181108510&aid=10"
+                    "hash": "action=transfer-to-group&group_id=" + group_id + "&aid=10"
                 }
             }],
             [{
@@ -155,6 +161,9 @@ return API.messages.send({
         ]
     })
 });
+
+// Выводим данные и закрываем вкладку
+return close(response);
 `;
 
 export default {

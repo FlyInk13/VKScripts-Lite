@@ -554,6 +554,7 @@ class App extends React.Component {
           onClose={() => this.setState({popout: null})}
           title="Настройки"
         >
+          <ActionSheetItem autoclose onClick={() => this.codeLoad('sendKeyboard')}>Отправка клавиатуры, vk connect, close</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.codeLoad('userAuth')}>Авторизация пользователя</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.codeLoad('groupAuth')}>Авторизация группы</ActionSheetItem>
           <ActionSheetItem autoclose theme="destructive">Закрыть</ActionSheetItem>
