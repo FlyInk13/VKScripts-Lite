@@ -35,13 +35,13 @@ import 'brace/ext/language_tools';
 import {Console, Decode, Hook} from 'console-feed';
 import ConsoleStyles from './TerminalTheme';
 
-import './App.css';
-import examples from './examples.js';
+// Crypt
 import AES from 'crypto-js/aes';
 import UTF8 from 'crypto-js/enc-utf8';
 
-window.AES = AES;
-window.UTF8 = UTF8;
+// App
+import './App.css';
+import examples from './examples.js';
 import codeBuilder from './utils/codeBuilder.js';
 import beautify from './utils/beautify.js';
 
@@ -52,8 +52,6 @@ const TabNameConsole = 'Console';
 const noop = () => 0;
 
 SetWebTheme();
-
-window.connectPromise = connectPromise;
 
 class App extends React.Component {
   constructor(props) {
@@ -490,7 +488,7 @@ class App extends React.Component {
       const token = data.data.access_token;
       const authData = this.state.authData;
       authData[authKey] = token;
-      this.setState({ authData })
+      this.setState({ authData });
       return token;
     })
   }
@@ -577,7 +575,8 @@ class App extends React.Component {
           title="Настройки"
         >
           <ActionSheetItem theme="destructive" autoclose onClick={() => this.codeView()}>Посмотреть код [debug]</ActionSheetItem>
-          <ActionSheetItem autoclose theme="cancel">Закрыть</ActionSheetItem>
+          <ActionSheetItem autoclose onClick={() => this.auth().catch(() => 0)}>Сменить токен</ActionSheetItem>
+          <ActionSheetItem autoclose theme="destructive">Закрыть</ActionSheetItem>
         </ActionSheet>
     });
   }
@@ -592,10 +591,9 @@ class App extends React.Component {
           <ActionSheetItem theme="destructive" autoclose onClick={() => this.openDebugSettings()}>Debug меню</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.showExamples()}>Примеры скриптов</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.codeSaveWindow()}>Сохранить скрипт</ActionSheetItem>
-          <ActionSheetItem autoclose onClick={() => this.auth().catch(() => 0)}>Сменить токен</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.codeBeautify()}>Сделать красиво</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.editorToggle()}>Сменить редактор</ActionSheetItem>
-          <ActionSheetItem autoclose theme="cancel">Закрыть</ActionSheetItem>
+          <ActionSheetItem autoclose theme="destructive">Закрыть</ActionSheetItem>
         </ActionSheet>
     });
   }
