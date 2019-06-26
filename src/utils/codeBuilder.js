@@ -25,7 +25,6 @@ Run().then(function(res) {
 `;
 
 function buildCode(code) {
-  let offset = 0;
   const inserts = [];
 
   code = `async function Run() {${code} }` + codeEnv;
@@ -75,7 +74,6 @@ function buildCode(code) {
   }).forEach(function insertToCode(insert) {
     insert.delete = insert.delete || 0;
     code = code.substr(0, insert.pos) + insert.code + code.substr(insert.pos + insert.delete);
-    offset += insert.code.length;
   });
 
   return code;
