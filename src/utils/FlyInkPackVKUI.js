@@ -114,7 +114,7 @@ function SetWebTheme(isWeb) {
         }
         document.body.attributes.setNamedItem(schemeAttribute);
 
-        if (/light/.test(e.detail.data.scheme)) {
+        if (e.detail.data.appearance === 'light') {
           connect.send("VKWebAppSetViewSettings", {
             status_bar_style: "dark",
             action_bar_color: "#fff"
