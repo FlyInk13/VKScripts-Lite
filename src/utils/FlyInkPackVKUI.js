@@ -113,6 +113,13 @@ function SetWebTheme(isWeb) {
           schemeAttribute.value = e.detail.data.scheme ? e.detail.data.scheme : 'bright_light';
         }
         document.body.attributes.setNamedItem(schemeAttribute);
+
+        if (/light/.test(e.detail.data.scheme)) {
+          connect.send("VKWebAppSetViewSettings", {
+            status_bar_style: "dark",
+            action_bar_color: "#fff"
+          });
+        }
         break;
     }
   });
