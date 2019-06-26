@@ -134,6 +134,9 @@ class PromiseAPI {
     this.access_token = false;
     this.view = false;
     this.v = 5.92;
+    this.cart = [];
+    this.log = false;
+    this.pause = false;
 
     this.connect.subscribe((e) => {
       switch (e.detail.type) {
@@ -147,11 +150,45 @@ class PromiseAPI {
     });
   }
 
+  debug(...args) {
+    if (!this.log) return;
+    console.log(...args);
+  }
+
+  cartCheck(request_id, ignoreCart) {
+    if (!this.pause && (!this.interval || ignoreCart)) {
+      const request = this.requests[request_id];
+      this.connect.send('VKWebAppCallAPIMethod', request.data);
+      this.debug('cartCheck', 'call', request);
+      return;
+    }
+    this.debug('cartCheck', 'push');
+    this.cart.push(request_id);
+  }
+
+  cartTick() {
+    this.debug('cartTick', this.cart.length);
+    if (!this.cart.length) {
+      clearInterval(this.interval);
+      delete this.interval;
+      return;
+    }
+    const request_id = this.cart.shift();
+    this.cartCheck(request_id, true);
+  }
+
+  cartInit() {
+    this.debug('cartInit');
+    if (this.interval) return;
+    this.interval = setInterval(() => this.cartTick(), 334);
+  }
+
   showCaptcha(method, params, error) {
     if (!this.view) {
       throw error;
     }
 
+    this.pause = 1;
     return new Promise((resolve) => {
       const view = this.view;
       view.setState({
@@ -168,8 +205,8 @@ class PromiseAPI {
             }}
           >
             <h2>Введите код с картинки</h2>
-            <img src={error.captcha_img} alt={error.captcha_img} />
-            <Input onChange={(e) => {
+            <img src={error.captcha_img} style={{ width: 238, borderRadius: 3 }} alt={error.captcha_img} />
+            <Input defaultValue='' onChange={(e) => {
               const captchaCode = e.currentTarget.value;
               view.setState({ captchaCode });
             }}/>
@@ -177,6 +214,7 @@ class PromiseAPI {
         )
       });
     }).then((captcha_key) => {
+      this.pause = 0;
       const captcha_sid = error.captcha_sid;
       return this.callMethod(method, {
         ...params,
@@ -198,19 +236,22 @@ class PromiseAPI {
       params.access_token = this.access_token;
       params.v = this.v;
 
-      this.requests[request_id] = {resolve, reject, ...data};
-      this.connect.send('VKWebAppCallAPIMethod', data);
+      this.requests[request_id] = {resolve, reject, data};
+      this.cartCheck(request_id);
     }).catch((error) => {
-      const errorCode = error ? error.error_code : 0;
+      error = error || {};
+      const apiError = error.error_reason || error;
+      const errorCode = apiError.error_code || 0;
 
       switch (errorCode) {
         case 6:
+          this.cartInit();
           return this.callMethod(method, params);
         case 14:
-          return this.showCaptcha(method, params, error);
+          return this.showCaptcha(method, params, apiError);
       }
 
-      throw error;
+      throw apiError;
     });
   };
 
