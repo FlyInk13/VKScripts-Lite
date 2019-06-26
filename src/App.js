@@ -574,7 +574,7 @@ class App extends React.Component {
           onClose={() => this.setState({popout: null})}
           title="Настройки"
         >
-          <ActionSheetItem theme="destructive" autoclose onClick={() => this.codeView()}>Посмотреть код [debug]</ActionSheetItem>
+          <ActionSheetItem autoclose onClick={() => this.codeView()}>Посмотреть код</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.auth().catch(() => 0)}>Сменить токен</ActionSheetItem>
           <ActionSheetItem autoclose theme="destructive">Закрыть</ActionSheetItem>
         </ActionSheet>
