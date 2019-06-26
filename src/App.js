@@ -22,7 +22,7 @@ import Icon24Settings from '@vkontakte/icons/dist/24/settings';
 import Icon24Unpin from '@vkontakte/icons/dist/24/unpin';
 
 // Elements
-import {PanelHeaderFull, PromiseAPI, SetWebTheme, ScrollableAlert, getArgs} from './FlyInkPackVKUI';
+import {PanelHeaderFull, PromiseAPI, SetWebTheme, ScrollableAlert, getArgs} from './utils/FlyInkPackVKUI';
 
 // Ace
 import AceEditor from 'react-ace';
@@ -37,12 +37,13 @@ import ConsoleStyles from './TerminalTheme';
 
 import './App.css';
 import examples from './examples.js';
-import codeBuilder from './codeBuilder.js';
 import AES from 'crypto-js/aes';
 import UTF8 from 'crypto-js/enc-utf8';
 
 window.AES = AES;
 window.UTF8 = UTF8;
+import codeBuilder from './utils/codeBuilder.js';
+import beautify from './utils/beautify.js';
 
 const Alert = ScrollableAlert;
 const TabTypeConsole = 'Console';
@@ -190,6 +191,15 @@ class App extends React.Component {
       return false;
     }
     return true;
+  }
+
+  codeBeautify() {
+    const code = this.state.value;
+    beautify(code).then((newCode) => {
+      this.setState({
+        value: newCode
+      });
+    });
   }
 
   codeSaveWindow() {
@@ -583,6 +593,7 @@ class App extends React.Component {
           <ActionSheetItem autoclose onClick={() => this.showExamples()}>Примеры скриптов</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.codeSaveWindow()}>Сохранить скрипт</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.auth().catch(() => 0)}>Сменить токен</ActionSheetItem>
+          <ActionSheetItem autoclose onClick={() => this.codeBeautify()}>Сделать красиво</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.editorToggle()}>Сменить редактор</ActionSheetItem>
           <ActionSheetItem autoclose theme="cancel">Закрыть</ActionSheetItem>
         </ActionSheet>
