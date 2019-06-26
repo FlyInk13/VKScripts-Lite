@@ -293,9 +293,65 @@ function getArgs() {
 }
 
 
+class ScrollArea extends React.Component {
+  constructor(props) {
+    super(props);
+    this.ScrollArea = React.createRef();
+  }
+
+  onTouchMove = (event) => {
+    const el = this.getElement();
+    const newPos = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+    };
+
+    const offsetX = this.pos.x - newPos.x;
+    const offsetY = this.pos.y - newPos.y;
+
+    el.scrollLeft += offsetX;
+    el.scrollTop += offsetY;
+
+    this.pos = newPos;
+  };
+
+  onTouchStart = (event) => {
+    this.pos = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+    };
+  };
+
+  getElement() {
+    const firstChild = this.ScrollArea.current.childNodes[0];
+    const findChild = this.ScrollArea.current.querySelector(this.props.selector);
+
+    return findChild || firstChild;
+  }
+
+  componentDidMount() {
+    const el = this.getElement();
+
+    el.addEventListener('touchstart', this.onTouchStart, false);
+    el.addEventListener('touchmove', this.onTouchMove, false);
+  }
+
+  componentWillUnmount() {
+    const el = this.getElement();
+
+    el.removeEventListener('touchstart', this.onTouchStart);
+    el.removeEventListener('touchmove', this.onTouchMove);
+  }
+
+  render() {
+    return <div ref={this.ScrollArea} className='scrollArea' {...this.props} />;
+  }
+}
+
 export {
   PanelHeaderFull,
   SetWebTheme,
   PromiseAPI,
+  ScrollArea,
   getArgs,
 };

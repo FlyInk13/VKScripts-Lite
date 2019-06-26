@@ -23,7 +23,7 @@ import Icon24Settings from '@vkontakte/icons/dist/24/settings';
 import Icon24Unpin from '@vkontakte/icons/dist/24/unpin';
 
 // Elements
-import {PanelHeaderFull, PromiseAPI, SetWebTheme, getArgs} from './utils/FlyInkPackVKUI';
+import {PanelHeaderFull, PromiseAPI, SetWebTheme, getArgs, ScrollArea} from './utils/FlyInkPackVKUI';
 
 // Ace
 import AceEditor from 'react-ace';
@@ -102,7 +102,9 @@ class App extends React.Component {
             this.alert(noop, (
               <div>
                 <b>Получен новый токен:</b>
-                <Input defaultValue={token}/>
+                <ScrollArea selector='input'>
+                  <Input defaultValue={token}/>
+                </ScrollArea>
               </div>
             ));
           }
@@ -213,14 +215,16 @@ class App extends React.Component {
         this.alert(noop, (
           <div>
             <b>Скрипт успешно сохранен</b>
-            <Input defaultValue={'https://vk.com/app6979558#' + name}/>
+            <ScrollArea selector='input'>
+              <Input defaultValue={'https://vk.com/app6979558#' + name}/>
+            </ScrollArea>
           </div>
         ));
       }).catch((e) => {
         this.showError(e);
       });
     },
-      <span style={{ whiteSpace: 'pre' }}>
+      <span style={{ whiteSpace: 'pre-line' }}>
         {examples.saveText}
       </span>
     );
@@ -228,16 +232,18 @@ class App extends React.Component {
 
   codeView() {
     this.alert(noop, (
-      <Textarea value={codeBuilder(this.state.value)}/>
+      <ScrollArea selector='textarea'>
+        <Textarea value={codeBuilder(this.state.value)}/>
+      </ScrollArea>
     ));
   }
 
 
   showError(e) {
     this.alert(noop, (
-      <pre>
-        {'Произошла ошибка:\n' + JSON.stringify(e, null, 3)}
-      </pre>
+      <ScrollArea selector='textarea'>
+        <Textarea defaultValue={'Произошла ошибка:\n' + JSON.stringify(e, null, 3)}/>
+      </ScrollArea>
     ));
   }
 
@@ -274,8 +280,14 @@ class App extends React.Component {
         connect,
         accessToken,
         auth: (scope, group_id) => this.auth(scope, group_id),
-        alert: (message) => new Promise((resolve) => this.alert(resolve, message ? message.toString() : message)),
         prompt: (message, inputValue) => new Promise((resolve) => this.prompt(resolve, message.toString(), inputValue)),
+        alert: (message) => new Promise((resolve) => {
+          this.alert(resolve, (
+            <ScrollArea selector='textarea'>
+              <Textarea defaultValue={message ? message.toString() : message}/>
+            </ScrollArea>
+          ))
+        }),
         Args: getArgs(),
         connectRequest: (event, data) => connectPromise.send(event, data),
         close: (res) => {
@@ -523,7 +535,9 @@ class App extends React.Component {
         >
           <h2>Подтвердите действие</h2>
           <p>{title}</p>
-          <Input defaultValue={value} onChange={(event) => this.setState({promptValue: event.target.value})}/>
+          <ScrollArea selector='input'>
+            <Input defaultValue={value} onChange={(event) => this.setState({promptValue: event.target.value})}/>
+          </ScrollArea>
         </Alert>
       )
     });
@@ -545,7 +559,7 @@ class App extends React.Component {
         >
           <h2>Подтвердите действие</h2>
           <div className="alertContentWarp">
-            {data}
+              {data}
           </div>
         </Alert>
       )
