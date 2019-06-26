@@ -14,34 +14,6 @@ class PanelHeaderInternal extends PanelHeader {
   }
 }
 
-class ScrollableAlert extends React.Component {
-  constructor(props) {
-    super(props);
-    this.alert = React.createRef();
-  }
-
-  static cancelBubble(event) {
-    event.cancelBubble = true;
-  }
-
-  getRoot() {
-    return this.alert.current.element.current;
-  }
-
-  componentDidMount() {
-    this.getRoot().addEventListener('touchmove', ScrollableAlert.cancelBubble);
-  }
-
-  componentWillUnmount() {
-    this.getRoot().removeEventListener('touchmove', ScrollableAlert.cancelBubble);
-  }
-
-  render() {
-    return <Alert ref={this.alert} {...this.props}/>
-  }
-}
-
-
 class PanelHeaderFull extends React.Component {
   constructor(props) {
     super(props);
@@ -277,6 +249,5 @@ export {
   PanelHeaderFull,
   SetWebTheme,
   PromiseAPI,
-  ScrollableAlert,
   getArgs,
 };

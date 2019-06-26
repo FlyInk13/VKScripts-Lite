@@ -9,6 +9,7 @@ import {
   Tabs,
   TabsItem,
   View,
+  Alert,
   Textarea,
 } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
@@ -22,7 +23,7 @@ import Icon24Settings from '@vkontakte/icons/dist/24/settings';
 import Icon24Unpin from '@vkontakte/icons/dist/24/unpin';
 
 // Elements
-import {PanelHeaderFull, PromiseAPI, SetWebTheme, ScrollableAlert, getArgs} from './utils/FlyInkPackVKUI';
+import {PanelHeaderFull, PromiseAPI, SetWebTheme, getArgs} from './utils/FlyInkPackVKUI';
 
 // Ace
 import AceEditor from 'react-ace';
@@ -45,7 +46,6 @@ import examples from './examples.js';
 import codeBuilder from './utils/codeBuilder.js';
 import beautify from './utils/beautify.js';
 
-const Alert = ScrollableAlert;
 const TabTypeConsole = 'Console';
 const TabTypeFrame = 'Frame';
 const TabNameConsole = 'Console';
