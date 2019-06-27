@@ -288,55 +288,48 @@ function getArgs() {
 class ScrollArea extends React.Component {
   constructor(props) {
     super(props);
-    this.ScrollArea = React.createRef();
+    this.scrollArea = React.createRef();
   }
 
-  onTouchMove = (event) => {
-    const el = this.getElement();
-    const newPos = {
+  onTouch = (event) => {
+    const el = event.currentTarget;
+    const posOld = el.pos;
+    const posNew = {
       x: event.touches[0].clientX,
       y: event.touches[0].clientY,
     };
 
-    const offsetX = this.pos.x - newPos.x;
-    const offsetY = this.pos.y - newPos.y;
+    if (event.type !== 'touchstart') {
+      const offsetX = posOld.x - posNew.x;
+      const offsetY = posOld.y - posNew.y;
 
-    el.scrollLeft += offsetX;
-    el.scrollTop += offsetY;
+      el.scrollLeft += offsetX;
+      el.scrollTop += offsetY;
+    }
 
-    this.pos = newPos;
+    el.pos = posNew;
   };
 
-  onTouchStart = (event) => {
-    this.pos = {
-      x: event.touches[0].clientX,
-      y: event.touches[0].clientY,
-    };
-  };
-
-  getElement() {
-    const firstChild = this.ScrollArea.current.childNodes[0];
-    const findChild = this.ScrollArea.current.querySelector(this.props.selector);
-
-    return findChild || firstChild;
+  getElements() {
+    return this.scrollArea.current.querySelectorAll(this.props.selector);
   }
 
   componentDidMount() {
-    const el = this.getElement();
-
-    el.addEventListener('touchstart', this.onTouchStart, false);
-    el.addEventListener('touchmove', this.onTouchMove, false);
+    this.getElements().forEach((el) => {
+      el.addEventListener('touchstart', this.onTouch, false);
+      el.addEventListener('touchmove', this.onTouch, false);
+    });
   }
 
   componentWillUnmount() {
-    const el = this.getElement();
-
-    el.removeEventListener('touchstart', this.onTouchStart);
-    el.removeEventListener('touchmove', this.onTouchMove);
+    this.getElements().forEach((el) => {
+      el.removeEventListener('touchstart', this.onTouch);
+      el.removeEventListener('touchmove', this.onTouch);
+    });
   }
 
   render() {
-    return <div ref={this.ScrollArea} className='scrollArea' {...this.props} />;
+    return <div ref={this.scrollArea} className='scrollArea' {...this.props} />;
   }
 }
 
