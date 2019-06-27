@@ -45,6 +45,7 @@ import './App.css';
 import examples from './examples.js';
 import codeBuilder from './utils/codeBuilder.js';
 import beautify from './utils/beautify.js';
+import debugApp from './utils/debugApp.js';
 
 const TabTypeConsole = 'Console';
 const TabTypeFrame = 'Frame';
@@ -588,6 +589,7 @@ class App extends React.Component {
           onClose={() => this.setState({popout: null})}
           title="Настройки"
         >
+          <ActionSheetItem autoclose onClick={() => debugApp()}>Загрузить консоль</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.codeView()}>Посмотреть код</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.auth().catch(() => 0)}>Сменить токен</ActionSheetItem>
           <ActionSheetItem autoclose theme="destructive">Закрыть</ActionSheetItem>
