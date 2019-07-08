@@ -333,10 +333,22 @@ class ScrollArea extends React.Component {
   }
 }
 
+let ls = {};
+
+try {
+  localStorage.test = 1;
+  ls = localStorage;
+} catch (e) {
+  if (console && console.warn) {
+    console.warn("localStorage error");
+  }
+}
+
 export {
   PanelHeaderFull,
   SetWebTheme,
   PromiseAPI,
   ScrollArea,
   getArgs,
+  ls,
 };

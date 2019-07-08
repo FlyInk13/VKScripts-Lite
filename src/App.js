@@ -23,7 +23,11 @@ import Icon24Settings from '@vkontakte/icons/dist/24/settings';
 import Icon24Unpin from '@vkontakte/icons/dist/24/unpin';
 
 // Elements
-import {PanelHeaderFull, PromiseAPI, SetWebTheme, getArgs, ScrollArea} from './utils/FlyInkPackVKUI';
+import {
+  PanelHeaderFull, PromiseAPI,
+  SetWebTheme, getArgs,
+  ScrollArea, ls,
+} from './utils/FlyInkPackVKUI';
 
 // Ace
 import AceEditor from 'react-ace';
@@ -70,7 +74,7 @@ class App extends React.Component {
       activeTab: false, // componentDidMount
       frameId: 0,
       authData: { },
-      value: localStorage.value || examples.userAuth,
+      value: ls.value || examples.userAuth,
       logs: [
         {
           method: "info",
@@ -338,7 +342,7 @@ class App extends React.Component {
   }
 
   codeOnUpdate(newValue) {
-    localStorage.value = newValue;
+    ls.value = newValue;
     this.setState({
       value: newValue
     });
