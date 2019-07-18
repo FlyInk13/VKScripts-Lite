@@ -7,19 +7,6 @@
     <meta name="theme-color" content="#000000">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
     <title>VK App: VK JS</title>
-    <script>
-        window.isWeb = /web=1/.test(window.location.search);
-        if (window.isWeb) {
-          Object.defineProperties(navigator, {
-            userAgent: {
-              value: 'web android',
-              configurable: false,
-              enumerable: true,
-              writable: false
-            }
-          });
-        }
-    </script>
 </head>
 <body>
 <div id="root"></div>

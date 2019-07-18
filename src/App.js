@@ -27,7 +27,7 @@ import {
   PanelHeaderFull, PromiseAPI,
   SetWebTheme, getArgs,
   ScrollArea, ls,
-} from './utils/FlyInkPackVKUI';
+} from 'vkappsutils/dist';
 
 // Ace
 import AceEditor from 'react-ace';
