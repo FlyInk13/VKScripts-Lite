@@ -128,24 +128,6 @@ class App extends React.Component {
     connect.send('VKWebAppGetAuthToken', this.opts);
   }
 
-  static codeGetData(name) {
-    let global = 1;
-    let key = name;
-    let password;
-
-    if (name[0] === '.') {
-      key = name.substr(1);
-      global = 0;
-    }
-
-    if (/:/.test(name)) {
-      [key, ...password] = name.split(':');
-      password = password.join(':');
-    }
-
-    return { name, key, global, password };
-  }
-
   codeLoad(key) {
     if (!key) return;
 
@@ -156,38 +138,32 @@ class App extends React.Component {
       return;
     }
 
-    const data = App.codeGetData(key);
-    return this.api.callMethod('storage.get', {
-      ...data
-    }).then((value) => {
-      if (data.password) {
-        value = AES.decrypt(value, data.password).toString(UTF8);
-      }
+    if (!/(^https|cc\/)/.test(key)) {
+      this.alert(noop, 'Хранение скриптов было основанно на storage ВКонтакте, но этот метод отключили. https://vk.com/wall-1_393145\n\nИсполльзуйте pastebin');
+      return;
+    }
 
+    return Promise.resolve().then(() => {
+      if (!/^cc\//.test(key)) {
+        return key;
+      }
+      return this.api.callMethod('utils.checkLink', {
+        url: 'https://vk.' + key
+      }).then(x => x.link.replace('&amp;', '&'));
+    }).then((url) => {
+      return fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'same-origin',
+      });
+    }).then((res) => {
+      return res.text();
+    }).then((value) => {
       this.setState({ value });
       this.editorGet().value = value;
     }).catch((e) => {
       this.showError(e);
     });
-  }
-
-  codeSave(key, value) {
-    const data = App.codeGetData(key);
-
-    if (data.password) {
-      value = AES.encrypt(value, data.password).toString();
-    }
-
-    if (!this.codeCheckLength(value)) {
-      return;
-    }
-
-    return this.api.callMethod('storage.set', {
-      value, ...data
-    }).then((res) => {
-      if (!res) throw { error: res };
-      return key;
-    })
   }
 
   codeCheckLength(code) {
@@ -205,34 +181,6 @@ class App extends React.Component {
         value: newCode
       });
     });
-  }
-
-  codeSaveWindow() {
-    const code = this.state.value;
-    if (!this.codeCheckLength(code)) {
-      return;
-    }
-
-    this.prompt((name) => {
-      if (!name) return;
-
-      this.codeSave(name, this.state.value).then(() => {
-        this.alert(noop, (
-          <div>
-            <b>Скрипт успешно сохранен</b>
-            <ScrollArea selector='input'>
-              <Input defaultValue={'https://vk.com/app6979558#' + name}/>
-            </ScrollArea>
-          </div>
-        ));
-      }).catch((e) => {
-        this.showError(e);
-      });
-    },
-      <span style={{ whiteSpace: 'pre-line' }}>
-        {examples.saveText}
-      </span>
-    );
   }
 
   codeView() {
@@ -610,7 +558,7 @@ class App extends React.Component {
         >
           <ActionSheetItem theme="destructive" autoclose onClick={() => this.openDebugSettings()}>Debug меню</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.showExamples()}>Примеры скриптов</ActionSheetItem>
-          <ActionSheetItem autoclose onClick={() => this.codeSaveWindow()}>Сохранить скрипт</ActionSheetItem>
+          {/*<ActionSheetItem autoclose onClick={() => this.codeSaveWindow()}>Сохранить скрипт</ActionSheetItem>*/}
           <ActionSheetItem autoclose onClick={() => this.codeBeautify()}>Сделать красиво</ActionSheetItem>
           <ActionSheetItem autoclose onClick={() => this.editorToggle()}>Сменить редактор</ActionSheetItem>
           <ActionSheetItem autoclose theme="destructive">Закрыть</ActionSheetItem>
